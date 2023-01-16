@@ -33,7 +33,7 @@ function AuthTemplate({ children }) {
   return (
     <AuthTemplateBlock>
       <div className="logo-area">
-        <Link to="/">DIARY</Link>
+        <Link to="/">Diary</Link>
       </div>
       <WhiteBox>{children}</WhiteBox>
     </AuthTemplateBlock>
