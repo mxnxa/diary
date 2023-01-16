@@ -1,7 +1,12 @@
 import React from "react";
+import Button from "../components/common/Button";
 
 function CalendarPage() {
-  return <div>캘린더</div>;
+  return (
+    <div>
+      <Button>버튼</Button>
+    </div>
+  );
 }
 
 export default CalendarPage;
