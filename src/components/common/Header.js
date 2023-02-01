@@ -6,7 +6,7 @@ import Button from "./Button";
 import Responsive from "./Responsive";
 
 const HeaderBlock = styled.div`
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
