@@ -1,10 +1,27 @@
 import React from "react";
-import styled from "styled-components";
+import { useState } from "react";
+import styled, { css } from "styled-components";
 import palette from "../../lib/styles/palette";
 import Button from "../common/Button";
+import Responsive from "../common/Responsive";
+import { GoPlus } from "react-icons/go";
+
+const Wrapper = styled(Responsive)`
+  flex: 1;
+  display: flex;
+  background-color: #fff;
+  /* border: 1px solid ${palette.gray[3]}; */
+  border-radius: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 0;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.08);
+`;
 
 const CalendarViewBlock = styled.div`
-  flex: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CalendarHead = styled.div`
@@ -12,32 +29,105 @@ const CalendarHead = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 2px solid ${palette.gray[3]};
-  padding: 10px 0;
+  padding: 15px 40px;
+
+  p {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 40px;
+  }
 `;
 
 const CalendarBody = styled.div`
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: 40px repeat(6, 1fr);
-  gap: 10px;
+  grid-template-rows: 30px repeat(6, 1fr); // 행
+  grid-template-columns: repeat(7, 1fr); // 열
+  /* gap: 10px; */
+  /* padding: 10px ; */
 `;
 
+// 요일
 const CalendarDay = styled.div`
   text-align: center;
+  line-height: 30px;
+  /* border-bottom: 1px solid ${palette.gray[3]}; */
 `;
+
+// 날짜
 const CalendarDate = styled.p`
-  text-align: center;
+  border-top: 1px solid ${palette.gray[3]};
+  /* border-left: 1px solid ${palette.gray[3]}; */
+  padding: 10px;
+  cursor: pointer;
+
+  ${({ isCurrentMonth }) =>
+    !isCurrentMonth &&
+    css`
+      color: ${palette.gray[3]};
+      cursor: inherit;
+    `}/* ${({ active }) =>
+    active &&
+    css`
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: ${palette.violet[3]};
+    `} */
 `;
 
-const render = () => {
-  let result = [];
+// 이벤트 목록
+const EventViewBlock = styled.div`
+  flex: 0.3;
+  border-left: 1px solid ${palette.gray[3]};
+  padding: 20px 30px;
+  position: relative;
+`;
 
-  for (let i = 1; i < 32; i++) {
-    result.push(<CalendarDate>{i}</CalendarDate>);
+// 이벤트 추가 버튼
+const EventAddButton = styled.div`
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: ${palette.violet[3]};
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  cursor: pointer;
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+
+  &:hover {
+    background-color: ${palette.violet[4]};
+  }
+`;
+
+// 이벤트 아이템
+const EventItem = styled.li`
+  list-style: none;
+  cursor: pointer;
+  /* border-bottom: 1px solid ${palette.gray[3]}; */
+
+  & + & {
+    margin-top: 20px;
   }
 
-  return result;
-};
+  .title {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .time {
+    font-size: 12px;
+  }
+  .body {
+    font-size: 14px;
+  }
+`;
 
 const daylist = [
   "일요일",
@@ -49,21 +139,100 @@ const daylist = [
   "토요일",
 ];
 
+const today = {
+  year: new Date().getFullYear(),
+  month: new Date().getMonth(),
+  date: new Date().getDate(),
+};
+
+const eventlist = [
+  { id: 1, title: "oo생일", time: "하루 종일" },
+  { id: 2, title: "첫 번째 기록", body: "첫 번째 기록입니다." },
+  { id: 3, title: "두 번째 기록", body: "두 번째 기록입니다." },
+];
+
 function CalendarView() {
+  const [currentTargets, setCurrentTargets] = useState(today);
+  // const [selectedTargets, setSelectedTargets] = useState(today);
+  const { year, month, date } = currentTargets;
+
+  console.log(today.date);
+  console.log(date);
+
+  const prevMonth = () => {
+    if (month > 0) {
+      setCurrentTargets({ ...currentTargets, month: month - 1 });
+    } else {
+      setCurrentTargets({ ...currentTargets, year: year - 1, month: 11 });
+    }
+  };
+
+  const nextMonth = () => {
+    if (month < 11) {
+      setCurrentTargets({ ...currentTargets, month: month + 1 });
+    } else {
+      setCurrentTargets({ ...currentTargets, year: year + 1, month: 0 });
+    }
+  };
+
+  const startDate = new Date(year, month, 1);
+
+  const renderDate = new Date(
+    startDate.getFullYear(),
+    startDate.getMonth(),
+    startDate.getDate() - startDate.getDay()
+  );
+
+  const render = () => {
+    let result = [];
+
+    for (let i = 1; i <= 42; i++) {
+      result.push(
+        <CalendarDate key={i} isCurrentMonth={month === renderDate.getMonth()}>
+          {renderDate.getDate()}
+        </CalendarDate>
+      );
+      renderDate.setDate(renderDate.getDate() + 1);
+    }
+
+    return result;
+  };
+
   return (
-    <CalendarViewBlock>
-      <CalendarHead>
-        <Button violet>이전</Button>
-        <p>2023년 2월</p>
-        <Button violet>다음</Button>
-      </CalendarHead>
-      <CalendarBody>
-        {daylist.map((day) => (
-          <CalendarDay>{day}</CalendarDay>
-        ))}
-        {render()}
-      </CalendarBody>
-    </CalendarViewBlock>
+    <Wrapper>
+      <CalendarViewBlock>
+        <CalendarHead>
+          <Button onClick={() => prevMonth()}>&lt;</Button>
+          <p>
+            {year}년 {month + 1}월
+          </p>
+          <Button onClick={() => nextMonth()}>&gt;</Button>
+        </CalendarHead>
+        <CalendarBody>
+          {daylist.map((day, idx) => (
+            <CalendarDay key={idx}>{day}</CalendarDay>
+          ))}
+          {render()}
+        </CalendarBody>
+      </CalendarViewBlock>
+      <EventViewBlock>
+        <ul>
+          {eventlist.map((item) => (
+            <EventItem key={item.id}>
+              <span className="title">{item.title}</span>
+              {item.time ? (
+                <span className="time">{item.time}</span>
+              ) : (
+                <p className="body">{item.body}</p>
+              )}
+            </EventItem>
+          ))}
+        </ul>
+        <EventAddButton>
+          <GoPlus />
+        </EventAddButton>
+      </EventViewBlock>
+    </Wrapper>
   );
 }
 

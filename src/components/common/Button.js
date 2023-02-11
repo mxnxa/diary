@@ -9,10 +9,10 @@ const buttonStyle = css`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
+  background: ${palette.gray[8]};
   padding: 0.25rem 1rem;
   outline: none;
   cursor: pointer;
-  background: ${palette.gray[8]};
 
   &:hover {
     background: ${palette.gray[6]};

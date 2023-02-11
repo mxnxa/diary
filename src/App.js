@@ -1,18 +1,21 @@
 import { Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+import palette from "./lib/styles/palette";
 import CalendarPage from "./pages/CalendarPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import WritePage from "./pages/WritePage";
 
 const GlobalStyle = createGlobalStyle`
-  *{
+  * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
-
-  a{
+  body {
+    background-color: ${palette.violet[0]};
+  }
+  a {
     text-decoration: none;
     color: inherit;
   }
