@@ -41,7 +41,7 @@ const daylist = [
 ];
 
 function CalendarBody({ currentTargets }) {
-  const { year, month, date } = currentTargets;
+  const { year, month } = currentTargets;
 
   const startDate = new Date(year, month, 1);
 
