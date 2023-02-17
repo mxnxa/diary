@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../../common/Button";
 import Responsive from "../../common/Responsive";
 import WriteActionButton from "../WriteActionButton";
 
