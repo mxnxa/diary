@@ -28,7 +28,7 @@ const CalendarHead = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px solid ${palette.gray[3]};
+  border-bottom: 1px solid ${palette.gray[3]};
   padding: 15px 40px;
 
   p {
@@ -79,9 +79,35 @@ const CalendarDate = styled.p`
 // 이벤트 목록
 const EventViewBlock = styled.div`
   flex: 0.3;
-  border-left: 1px solid ${palette.gray[3]};
+  border-left: 2px solid ${palette.gray[3]};
   padding: 20px 30px;
   position: relative;
+`;
+
+const SubMenu = styled.ul`
+  list-style: none;
+  position: absolute;
+  bottom: 115px;
+  right: 40px;
+  border: 1px solid ${palette.gray[3]};
+  border-radius: 8px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.08);
+  display: none;
+
+  ${({ openMenu }) =>
+    openMenu &&
+    css`
+      display: block;
+    `}
+
+  li {
+    cursor: pointer;
+    padding: 7px 15px;
+
+    &:nth-child(1) {
+      border-bottom: 1px solid ${palette.gray[3]};
+    }
+  }
 `;
 
 // 이벤트 추가 버튼
@@ -155,9 +181,11 @@ function CalendarView() {
   const [currentTargets, setCurrentTargets] = useState(today);
   // const [selectedTargets, setSelectedTargets] = useState(today);
   const { year, month, date } = currentTargets;
+  const [openMenu, setOpenMenu] = useState(false);
 
   console.log(today.date);
   console.log(date);
+  console.log(openMenu);
 
   const prevMonth = () => {
     if (month > 0) {
@@ -228,7 +256,11 @@ function CalendarView() {
             </EventItem>
           ))}
         </ul>
-        <EventAddButton>
+        <SubMenu openMenu={openMenu}>
+          <li>일정 추가</li>
+          <li>일상 기록</li>
+        </SubMenu>
+        <EventAddButton onClick={() => setOpenMenu(true)}>
           <GoPlus />
         </EventAddButton>
       </EventViewBlock>
