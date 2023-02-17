@@ -84,29 +84,24 @@ const EventViewBlock = styled.div`
   position: relative;
 `;
 
-const SubMenu = styled.ul`
-  list-style: none;
-  position: absolute;
-  bottom: 115px;
-  right: 40px;
-  border: 1px solid ${palette.gray[3]};
-  border-radius: 8px;
-  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.08);
-  display: none;
+// 이벤트 아이템
+const EventItem = styled.li`
+  cursor: pointer;
+  /* border-bottom: 1px solid ${palette.gray[3]}; */
 
-  ${({ openMenu }) =>
-    openMenu &&
-    css`
-      display: block;
-    `}
+  & + & {
+    margin-top: 20px;
+  }
 
-  li {
-    cursor: pointer;
-    padding: 7px 15px;
-
-    &:nth-child(1) {
-      border-bottom: 1px solid ${palette.gray[3]};
-    }
+  .title {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .time {
+    font-size: 12px;
+  }
+  .body {
+    font-size: 14px;
   }
 `;
 
@@ -133,25 +128,29 @@ const EventAddButton = styled.div`
   }
 `;
 
-// 이벤트 아이템
-const EventItem = styled.li`
-  list-style: none;
-  cursor: pointer;
-  /* border-bottom: 1px solid ${palette.gray[3]}; */
+// 이벤트 추가 서브 메뉴
+const SubMenu = styled.ul`
+  position: absolute;
+  bottom: 115px;
+  right: 40px;
+  border: 1px solid ${palette.gray[3]};
+  border-radius: 8px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.08);
+  display: none;
 
-  & + & {
-    margin-top: 20px;
-  }
+  ${({ openMenu }) =>
+    openMenu &&
+    css`
+      display: block;
+    `}
 
-  .title {
-    font-weight: 700;
-    margin-bottom: 5px;
-  }
-  .time {
-    font-size: 12px;
-  }
-  .body {
-    font-size: 14px;
+  li {
+    cursor: pointer;
+    padding: 7px 15px;
+
+    &:nth-child(1) {
+      border-bottom: 1px solid ${palette.gray[3]};
+    }
   }
 `;
 
@@ -180,12 +179,8 @@ const eventlist = [
 function CalendarView() {
   const [currentTargets, setCurrentTargets] = useState(today);
   // const [selectedTargets, setSelectedTargets] = useState(today);
-  const { year, month, date } = currentTargets;
+  const { year, month } = currentTargets;
   const [openMenu, setOpenMenu] = useState(false);
-
-  console.log(today.date);
-  console.log(date);
-  console.log(openMenu);
 
   const prevMonth = () => {
     if (month > 0) {
@@ -257,8 +252,12 @@ function CalendarView() {
           ))}
         </ul>
         <SubMenu openMenu={openMenu}>
-          <li>일정 추가</li>
-          <li>일상 기록</li>
+          <li>
+            <a href="/schedule">일정 추가</a>
+          </li>
+          <li>
+            <a href="/daily">일상 기록</a>
+          </li>
         </SubMenu>
         <EventAddButton onClick={() => setOpenMenu(true)}>
           <GoPlus />
