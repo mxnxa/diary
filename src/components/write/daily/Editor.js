@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import Responsive from "../../common/Responsive";
 import WriteActionButton from "../WriteActionButton";
 
@@ -34,10 +36,6 @@ const TitleInput = styled(StyledInput)`
   font-weight: 700;
 `;
 
-const ContentInput = styled(StyledInput)`
-  font-size: 18px;
-`;
-
 const today = {
   year: new Date().getFullYear(),
   month: new Date().getMonth(),
@@ -52,6 +50,23 @@ function Editor() {
   const ampm = hour < 12 ? "오전" : "오후";
   const todaytime = `${year}.${month}.${date} ${ampm} ${h12}:${minute}`;
 
+  const modules = {
+    toolbar: {
+      container: [
+        [{ size: ["small", false, "large", "huge"] }, { color: [] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+          { align: [] },
+        ],
+        ["code-block", "link", "image"],
+      ],
+    },
+  };
+
   return (
     <EditorBlock>
       <DateBlock>
@@ -59,7 +74,7 @@ function Editor() {
         {/* {year}.{month}.{date} {ampm} {hour}:{minute} */}
       </DateBlock>
       <TitleInput placeholder="제목" />
-      <ContentInput placeholder="소중한 일상을 기록해보세요." />
+      <ReactQuill theme="snow" modules={modules} />
       <WriteActionButton save />
     </EditorBlock>
   );
