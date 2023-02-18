@@ -13,20 +13,21 @@ const buttonStyle = css`
   padding: 0.25rem 1rem;
   outline: none;
   cursor: pointer;
+  transition: 0.3s;
 
   &:hover {
     background: ${palette.gray[6]};
   }
 
-  ${(props) =>
-    props.fullWidth &&
+  ${({ fullWidth }) =>
+    fullWidth &&
     css`
       width: 100%;
       padding: 0.6rem 0;
     `}
 
-  ${(props) =>
-    props.violet &&
+  ${({ violet }) =>
+    violet &&
     css`
       background: ${palette.violet[3]};
 
@@ -34,17 +35,48 @@ const buttonStyle = css`
         background: ${palette.violet[4]};
       }
     `}
+
+    ${({ circle }) =>
+    circle &&
+    css`
+      border-radius: 50%;
+    `}
+
+    ${({ width }) =>
+    width &&
+    css`
+      width: ${width};
+    `}
+
+    ${({ height }) =>
+    height &&
+    css`
+      height: ${height};
+    `}
 `;
 
-const StyledButoon = styled.button`
+const StyledButton = styled.button`
   ${buttonStyle}
 `;
 const StyledLink = styled(Link)`
   ${buttonStyle}
 `;
 
-function Button(props) {
-  return props.to ? <StyledLink {...props} /> : <StyledButoon {...props} />;
+function Button({ children, to, violet, width, height, ...rest }) {
+  console.log(rest);
+  return (
+    <>
+      {to ? (
+        <StyledLink to={to} violet={violet} {...rest}>
+          {children}
+        </StyledLink>
+      ) : (
+        <StyledButton violet={violet} width={width} height={height} {...rest}>
+          {children}
+        </StyledButton>
+      )}
+    </>
+  );
 }
 
 export default Button;

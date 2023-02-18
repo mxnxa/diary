@@ -51,9 +51,6 @@ function CalendarBody({ currentTargets }) {
     startDate.getDate() - startDate.getDay()
   );
 
-  console.log(startDate);
-  console.log(renderDate.getFullYear());
-
   const render = () => {
     let result = [];
 

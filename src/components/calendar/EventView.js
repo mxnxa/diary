@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled, { css } from "styled-components";
 import palette from "../../lib/styles/palette";
 import { GoPlus } from "react-icons/go";
+import Button from "../common/Button";
 
 const EventViewBlock = styled.div`
   flex: 0.3;
@@ -13,7 +14,6 @@ const EventViewBlock = styled.div`
 
 const EventItem = styled.li`
   cursor: pointer;
-  /* border-bottom: 1px solid ${palette.gray[3]}; */
 
   & + & {
     margin-top: 20px;
@@ -32,26 +32,24 @@ const EventItem = styled.li`
 `;
 
 // 이벤트 추가 버튼
-const EventAddButton = styled.div`
-  width: 60px;
-  height: 60px;
+const EventAddButton = styled(Button)`
+  /* width: 60px;
+  height: 60px; */
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  background-color: ${palette.violet[3]};
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-  color: #fff;
-  font-size: 26px;
-  font-weight: 700;
-  cursor: pointer;
+  font-size: 30px;
   position: absolute;
   bottom: 40px;
   right: 40px;
+  transition: 0.3s;
 
-  &:hover {
-    background-color: ${palette.violet[4]};
-  }
+  ${({ openMenu }) =>
+    openMenu &&
+    css`
+      transform: rotate(45deg);
+    `}
 `;
 
 // 이벤트 추가 서브 메뉴
@@ -62,20 +60,39 @@ const SubMenu = styled.ul`
   border: 1px solid ${palette.gray[3]};
   border-radius: 8px;
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.08);
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
 
   ${({ openMenu }) =>
     openMenu &&
     css`
-      display: block;
+      opacity: 1;
+      visibility: visible;
     `}
 
   li {
     cursor: pointer;
-    padding: 7px 15px;
+    transition: 0.3s;
 
-    &:nth-child(1) {
+    &:first-child {
       border-bottom: 1px solid ${palette.gray[3]};
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    &:last-child {
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    a {
+      display: block;
+      height: 100%;
+      padding: 8px 15px;
     }
   }
 `;
@@ -111,7 +128,14 @@ function EventView() {
           <a href="/daily">일상 기록</a>
         </li>
       </SubMenu>
-      <EventAddButton onClick={() => setOpenMenu(true)}>
+      <EventAddButton
+        violet
+        circle
+        width="60px"
+        height="60px"
+        openMenu={openMenu}
+        onClick={() => setOpenMenu(!openMenu)}
+      >
         <GoPlus />
       </EventAddButton>
     </EventViewBlock>
