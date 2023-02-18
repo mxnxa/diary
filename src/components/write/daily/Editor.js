@@ -61,10 +61,14 @@ const today = {
 
 function Editor() {
   const { year, month, date, hour, minute } = today;
-  const h12 = hour > 12 ? hour - 12 : hour;
+  // const h12 = hour > 12 ? hour - 12 : hour;
+  const h12 = hour === 0 ? 12 : hour;
   const ampm = hour < 12 ? "오전" : "오후";
   const min_0 = minute < 10 ? "0" + minute : minute;
   const todaytime = `${year}.${month}.${date} ${ampm} ${h12}:${min_0}`;
+
+  console.log(today);
+  console.log(new Date());
 
   const modules = {
     toolbar: {
